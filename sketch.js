@@ -1,7 +1,8 @@
 let port, reader, writer;
 let pinsUsed = ["apin0", "dpin2", "dpin8"]; 
 let sensorData = {}; // Object to store sensor readings
-let connectButton
+let connectButton;
+let isConnected = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -28,6 +29,7 @@ async function connectToArduino() {
 
     console.log("Connected to Arduino!");
     connectButton.remove();
+    isConnected = true; // Set flag to true when connected
     runSerial();
   } catch (error) {
     console.error("Failed to open serial port:", error);
@@ -88,6 +90,10 @@ function getSensorData(type) {
 
 // Draw sensor data on the canvas
 function draw() {
+  if (!isConnected) {
+    return; // Only draw if connected to Arduino
+  }
+  
   background(220);
   textSize(14);
 
