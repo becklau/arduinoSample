@@ -1,10 +1,11 @@
 let port, reader, writer;
 let pinsUsed = ["apin0", "dpin2", "dpin8"]; 
 let sensorData = {}; // Object to store sensor readings
+let connectButton
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  let connectButton = createButton("Connect to Arduino");
+  connectButton = createButton("Connect to Arduino");
   connectButton.position(20, 20);
   connectButton.mousePressed(connectToArduino);
 }
@@ -26,6 +27,7 @@ async function connectToArduino() {
     writer = textEncoder.writable.getWriter();
 
     console.log("Connected to Arduino!");
+    connectButton.remove();
     runSerial();
   } catch (error) {
     console.error("Failed to open serial port:", error);
@@ -75,6 +77,7 @@ function processSerialData(data) {
       }
     }
   }
+  console.log(sensorData[`analog0`], sensorData[`digital2`], sensorData[`digital8`]);
 }
 
 
